@@ -14,7 +14,7 @@ function App() {
         <Forecast />
       </main>
     </div>
-  );
+  )
 }
 
 export default App;

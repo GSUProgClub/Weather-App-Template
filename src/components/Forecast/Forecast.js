@@ -2,12 +2,15 @@ import Conditions from '../Conditions/Conditions';
 import classes from './Forecast.module.css';
 import React, { useState } from 'react';
 
+let cities = [];
+
 const Forecast = () => {
     let [city, setCity] = useState('');
     let [unit, setUnit] = useState('imperial');
     let [responseObj, setResponse] = useState({});
     let [error, setError] = useState(false);
     let [loading, setLoading] = useState(false);
+    let [seen, setSeen] = useState(false);
 
     function getForecast(e) {
         // Stops default values of e going through
@@ -25,6 +28,14 @@ const Forecast = () => {
         // go from a text entry to a real text component
         // strips spaces, and most illegal characters
         const uriEncodedCity = encodeURIComponent(city);
+        if (cities.length > 1 && cities.includes(uriEncodedCity)) {
+            setSeen(true);
+            return;
+        } else {
+            setSeen(false);
+            cities.push(uriEncodedCity);
+        }
+
         const api_call = `https://api.openweatherapp.org/data/2.5/weather?q=${uriEncodedCity}&appid=${process.env.REACT_APP_API_KEY}`;
         fetch(api_call)
             .then(response => response.json())  // specify that the response is json
@@ -33,12 +44,13 @@ const Forecast = () => {
                     throw new Error();
                     // unexpected response
                 }
-
+                
                 setResponse(response);  // we set the response and trigger update
                 setLoading(false);  // We set our loading message to false
             })
             .catch(err => {
                 // we found a legitimate error, logging
+                setSeen(false);
                 setError(true);
                 setLoading(false);
                 console.log(err.message);
@@ -85,7 +97,10 @@ const Forecast = () => {
                responseObj={responseObj}
                error={error}
                loading={loading}
+               exists={seen}
                />
         </div>
     )
 }
+
+export default Forecast;
