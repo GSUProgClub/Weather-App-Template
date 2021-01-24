@@ -13,9 +13,10 @@ const CardList = ({ cities }) => {
                 <Card.Text></Card.Text>
             </Card.Body>
             <ListGroup className="weather-props">
-                <ListGroupItem>Min: {}</ListGroupItem>
-                <ListGroupItem>Max: {}</ListGroupItem>
-                <ListGroupItem>Humidity: {}</ListGroupItem>
+                <ListGroupItem>Feels Like: {city.main.feels_like}</ListGroupItem>
+                <ListGroupItem>Min: {city.main.temp_min}</ListGroupItem>
+                <ListGroupItem>Max: {city.main.temp_max}</ListGroupItem>
+                <ListGroupItem>Humidity: {city.main.humidity}</ListGroupItem>
             </ListGroup>
         </Card>
     ));

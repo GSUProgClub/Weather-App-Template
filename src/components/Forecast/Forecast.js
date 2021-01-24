@@ -11,6 +11,7 @@ const Forecast = () => {
     let [error, setError] = useState(false);
     let [loading, setLoading] = useState(false);
     let [seen, setSeen] = useState(false);
+    let weatherList = [];
 
     function getForecast(e) {
         // Stops default values of e going through
@@ -28,6 +29,7 @@ const Forecast = () => {
         // go from a text entry to a real text component
         // strips spaces, and most illegal characters
         const uriEncodedCity = encodeURIComponent(city);
+        
         if (cities.length > 1 && cities.includes(uriEncodedCity)) {
             setSeen(true);
             return;
@@ -46,6 +48,7 @@ const Forecast = () => {
                 }
                 
                 setResponse(response);  // we set the response and trigger update
+                weatherList.push(response); // We then append the weather of the city to the list we pass to the card renderer
                 setLoading(false);  // We set our loading message to false
             })
             .catch(err => {
@@ -98,6 +101,7 @@ const Forecast = () => {
                error={error}
                loading={loading}
                exists={seen}
+               cities={weatherList}
                />
         </div>
     )
