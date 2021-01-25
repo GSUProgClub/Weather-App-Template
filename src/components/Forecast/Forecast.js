@@ -38,7 +38,7 @@ const Forecast = () => {
             cities.push(uriEncodedCity);
         }
 
-        const api_call = `https://api.openweatherapp.org/data/2.5/weather?q=${uriEncodedCity}&appid=${process.env.REACT_APP_API_KEY}`;
+        const api_call = `https://api.openweathermap.org/data/2.5/weather?q=${uriEncodedCity}&appid=${process.env.REACT_APP_API_KEY}`;
         fetch(api_call)
             .then(response => response.json())  // specify that the response is json
             .then(response => {  // The promised response has been fulfilled and we can execute

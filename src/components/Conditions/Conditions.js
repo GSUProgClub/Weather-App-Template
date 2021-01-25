@@ -1,6 +1,8 @@
 import React from 'react';
 import classes from './Conditions.module.css';
+import CardList from '../CardList/CardList';
 
+debugger
 const conditions = (props) => {
     // Here, the way props is used, is to short circuit so that if we error
     // OR if we're loading, it displays the appropriate responses
@@ -18,7 +20,7 @@ const conditions = (props) => {
                 <div className={classes.Loader}/>
             }
 
-            {props.responseObj.cod == 200 ?
+            {props.responseObj.cod === 200 ?
                 <div>
                     <CardList cities={props.cities} />
                     {/* <p><strong>{props.responseObj.name}</strong></p>

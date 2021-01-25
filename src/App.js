@@ -6,7 +6,7 @@ import Logo from "./components/Logo/Logo";
 function App() {
   return (
     <div className="App">
-      <header classNAme='App-header'>
+      <header className='App-header'>
       <Logo/>
       <h1>React Weather App</h1>
       </header>

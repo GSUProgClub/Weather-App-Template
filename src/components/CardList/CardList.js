@@ -7,7 +7,7 @@ import Card from 'react-bootstrap/Card'
 const CardList = ({ cities }) => {
     const cardsArray = cities.map(city => (
         <Card style={{ width: '18rem' }}>
-            <Card.Img varient="top" src={}/>
+            <Card.Img varient="top" src={`https://openweathermap.org/img/wn/${city.weather[0]["icon"]}@2x.png`}/>
             <Card.Body>
                 <Card.Title>{city.name}</Card.Title>
                 <Card.Text></Card.Text>
