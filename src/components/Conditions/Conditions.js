@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './Conditions.module.css';
-import CardList from '../CardList/CardList';
+// import CardList from '../CardList/CardList';
 
 debugger
 const conditions = (props) => {
@@ -22,9 +22,8 @@ const conditions = (props) => {
 
             {props.responseObj.cod === 200 ?
                 <div>
-                    <CardList cities={props.cities} />
-                    {/* <p><strong>{props.responseObj.name}</strong></p>
-                    <p>It is currently {Math.round(props.responseObj.main.temp)} degrees out with {props.responseObj.weather[0].description}</p> */}
+                    <p><strong>{props.responseObj.name}</strong></p>
+                    <p>It is currently {Math.round(props.responseObj.main.temp)} degrees out with {props.responseObj.weather[0].description}</p>
                 </div>
                 : null
             }
