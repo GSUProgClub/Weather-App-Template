@@ -12,7 +12,7 @@ const Forecast = () => {
     let [loading, setLoading] = useState(false);
     let [seen, setSeen] = useState(false);
     let weatherList = [];
-
+    
     function getForecast(e) {
         // Stops default values of e going through
         e.preventDefault();
@@ -29,7 +29,8 @@ const Forecast = () => {
         // go from a text entry to a real text component
         // strips spaces, and most illegal characters
         const uriEncodedCity = encodeURIComponent(city);
-        
+
+        // uncomment this code for the demo
         // if (cities.length > 1 && cities.includes(uriEncodedCity)) {
         //     setSeen(true);
         //     return;
