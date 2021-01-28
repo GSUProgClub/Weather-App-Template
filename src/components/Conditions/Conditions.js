@@ -1,6 +1,5 @@
 import React from 'react';
 import classes from './Conditions.module.css';
-// import CardList from '../CardList/CardList';
 
 debugger
 const conditions = (props) => {
