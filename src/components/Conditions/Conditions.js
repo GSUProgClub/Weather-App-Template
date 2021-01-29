@@ -20,16 +20,16 @@ const Conditions = (props) => {
                 <div className={classes.Loader}/>
             }
 
-            {props.responseObj.cod === 200 ?
+            {props.available ?
                 <div>
                     <Card className={classes.root}>
-                        <CardMedia className={classes.media} image={`https://openweathermap.org/img/wn/${props.responseObj.weather[0]["icon"]}@2x.png`}/>
+                        <CardMedia className={classes.media} image={`https://openweathermap.org/img/wn/${props.responseObj.current.weather[0].icon}@2x.png`}/>
                         <CardContent>
                             <Typography variant={"h5"} component={"h2"}>
                                 {props.name}
                             </Typography>
                             <Typography className={classes.pos} color={"textSecondary"}>
-                                {props.responseObj.weather[0].description}
+                                {props.responseObj.current.weather[0].description}
                             </Typography>
                             <Typography variant={"body2"} component={"p"}>
                                 Current: {Math.round(props.responseObj.current.temp)}
@@ -38,7 +38,7 @@ const Conditions = (props) => {
                                 Feels Like: {Math.round(props.responseObj.current.feels_like)}
                             </Typography>
                             <Typography variant={"body2"} component={"p"}>
-                                Humidity: {Math.round(props.responseObj.main.humidity)}
+                                Humidity: {Math.round(props.responseObj.current.humidity)}
                             </Typography>
                         </CardContent>
                     </Card>

@@ -6,13 +6,18 @@ const columns = [
     {field: 'day', headerName: 'Temperature', width: 70},
     {field: 'min', headerName: 'Minimum', width: 70},
     {field: 'max', headerName: 'Maximum', width: 70},
-    {field: 'feels', headerName: 'Feels Like', width: 70},
+    {field: 'feels_like', headerName: 'Feels Like', width: 70},
     ];
 
 const FutureData = (props) => {
+    function generateRows(daily) {
+        let cleanData = 
+        return cleanData;
+    }
+
     return (
         <div style={{height: 400, width: '100%'}}>
-            <DataGrid rows={props.responseObj.daily} columns={columns} pageSize={10}/>
+            <DataGrid rows={generateRows(props.responseObj.daily)} columns={columns} pageSize={10}/>
         </div>
     )
 }

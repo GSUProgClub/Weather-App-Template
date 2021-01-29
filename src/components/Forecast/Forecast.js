@@ -17,30 +17,9 @@ const Forecast = () => {
     let [responseObj, setResponse] = useState({});
     let [error, setError] = useState(false);
     let [loading, setLoading] = useState(false);
+    let [cityName, setCityName] = useState();
+    let [dataAvailable, setData] = useState(false);
     let weatherList = [];
-
-    async function getLatLong(inputVal) {
-        let latitude = 0, longitude = 0, name = "";
-        await fetch(inputVal)
-            .then(response => response.json())
-            .then(response => {
-                if (response.cod !== 200) {
-                    throw new Error();
-                    // unexpected response
-                }
-                latitude = response.records[0].geopoint[0];
-                longitude = response.records[1].geopoint[1];
-                name = response.records[0].fields.city;
-            })
-            .catch(err => {
-                // we found a legitimate error, logging
-                //setSeen(false);
-                setError(true);
-                setLoading(false);
-                console.log(err.message);
-            });
-        return [latitude, longitude, name];
-    }
 
     function getForecast(e) {
         // Stops default values of e going through
@@ -61,35 +40,32 @@ const Forecast = () => {
 
         // To use the OneCall API from OpenWeather we need the lat, long and to properly get those,
         // we're going to make another api call to OpenDataSoft and their database us-zip-code-latitude-and-longitude
+        const latLongAPI = `https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-zip-code-latitude-and-longitude&q=${uriEncodedCity}`;
 
-        const lat_long_api = `https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-zip-code-latitude-and-longitude&q=${uriEncodedCity}`;
+        fetch(latLongAPI)
+            .then(openData => openData.json())
+            .then(openData => {
+                let lat = openData.records[0].fields.latitude;
+                let long = openData.records[0].fields.longitude;
+                setCityName(openData.records[0].fields.city);
 
-        let city_info = getLatLong(lat_long_api);
-
-        const latitude = city_info[0], longitude = city_info[1];
-        setInputValue(city_info[2]);
-
-        const api_call = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly,alerts&appid=${process.env.REACT_APP_API_KEY}`;
-
-        fetch(api_call)
-            .then(response => response.json())  // specify that the response is json
-            .then(response => {  // The promised response has been fulfilled and we can execute
-                if (response.cod !== 200) {
-                    throw new Error();
-                    // unexpected response
-                }
-                
-                setResponse(response);  // we set the response and trigger update
-                weatherList.push(response); // We then append the weather of the city to the list we pass to the card renderer
+                const openWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,hourly,alerts&appid=${process.env.REACT_APP_API_KEY}`;
+                return fetch(openWeather);
+            })
+            .then(openWeather => openWeather.json())
+            .then(openWeather => {
+                setResponse(openWeather);  // we set the response and trigger update
+                weatherList.push(openWeather); // We then append the weather of the city to the list we pass to the card renderer
                 setLoading(false);  // We set our loading message to false
+                setData(true);
             })
             .catch(err => {
                 // we found a legitimate error, logging
                 //setSeen(false);
                 setError(true);
                 setLoading(false);
-                console.log(err.message);
-            })
+                console.log(err);
+            });
     }
 
     return (
@@ -114,10 +90,10 @@ const Forecast = () => {
                         onChange={(e) => setInputValue(e.target.value)}
                         />
                         <FormControl component={"fieldset"}>
-                            <FormLabel component={"units"}/>
+                            <FormLabel/>
                             <RadioGroup name={"units"} value={unit} onChange={(e) => setUnit(e.target.value)}>
-                                <FormControlLabel value={'metric'} control={<Radio/>} label={"Celsius"}/>
-                                <FormControlLabel value={'imperial'} control={<Radio/>} label={"Fahrenheit"}/>
+                                <FormControlLabel value={'metric'} control={<Radio value={'metric'}/>} label={"Celsius"}/>
+                                <FormControlLabel value={'imperial'} control={<Radio value={'imperial'}/>} label={"Fahrenheit"}/>
                             </RadioGroup>
                         </FormControl>
                     <Button
@@ -131,10 +107,11 @@ const Forecast = () => {
                 </form>
                 <Conditions
                     responseObj={responseObj}
-                    name = {inputValue}
+                    name = {cityName}
                     error={error}
                     loading={loading}
                     cities={weatherList}
+                    available={dataAvailable}
                 />
             </div>
         </Container>
