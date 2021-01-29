@@ -12,19 +12,23 @@ import Container from '@material-ui/core/Container';
 import {FormControl, FormLabel, Radio, RadioGroup} from "@material-ui/core";
 
 const Forecast = () => {
-    let [city, setCity] = useState('');
+    let [inputValue, setInputValue] = useState('');
     let [unit, setUnit] = useState();
     let [responseObj, setResponse] = useState({});
     let [error, setError] = useState(false);
     let [loading, setLoading] = useState(false);
     let weatherList = [];
-    
+
+    function hasNumber(inputVal) {
+        return /\d/.test(inputVal);
+    }
+
     function getForecast(e) {
         // Stops default values of e going through
         e.preventDefault();
 
         // trying to get forecasts without naming the city
-        if (city.length === 0) {
+        if (inputValue.length === 0) {
             return setError(true);
         }
 
@@ -34,9 +38,20 @@ const Forecast = () => {
 
         // go from a text entry to a real text component
         // strips spaces, and most illegal characters
-        const uriEncodedCity = encodeURIComponent(city);
+        const uriEncodedCity = encodeURIComponent(inputValue);
 
-        const api_call = `https://api.openweathermap.org/data/2.5/weather?q=${uriEncodedCity}&units=${unit}&appid=${process.env.REACT_APP_API_KEY}`;
+        let api_call = `https://api.openweathermap.org/data/2.5/weather?`;
+
+        // we actually build an API request
+        if (hasNumber(uriEncodedCity)) {
+            // we check if it is a zipcode
+            api_call += `zip=${uriEncodedCity}&units=${unit}&appid=${process.env.REACT_APP_API_KEY}`;
+        }
+        else {
+            // otherwise we just try a city
+            api_call += `q=${uriEncodedCity}&units=${unit}&appid=${process.env.REACT_APP_API_KEY}`;
+        }
+
         fetch(api_call)
             .then(response => response.json())  // specify that the response is json
             .then(response => {  // The promised response has been fulfilled and we can execute
@@ -72,12 +87,12 @@ const Forecast = () => {
                         margin={"normal"}
                         required
                         fullWidth
-                        id={city}
+                        id={inputValue}
                         label={"City"}
                         name={"city"}
-                        placeholder={"Enter City"}
+                        placeholder={"Enter City or Zip Code"}
                         autoFocus
-                        onChange={(e) => setCity(e.target.value)}
+                        onChange={(e) => setInputValue(e.target.value)}
                         />
                         <FormControl component={"fieldset"}>
                             <FormLabel component={"units"}/>
@@ -99,7 +114,6 @@ const Forecast = () => {
                     responseObj={responseObj}
                     error={error}
                     loading={loading}
-                    exists={seen}
                     cities={weatherList}
                 />
             </div>
