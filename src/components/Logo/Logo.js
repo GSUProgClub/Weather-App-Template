@@ -3,11 +3,14 @@ import classes from "./Logo.module.css";
 
 const Logo = () => {
     return (
-        <div className={classes.sky}>
-            <div className={classes.circle}/>
-            <div className={classes.cloud1}/>
-            <div className={classes.cloud2}/>
-            <div className={classes.cloud3}/>
+        <div className={classes.face}>
+            <div className={classes.leftEye}>
+                <div className={classes.pupil}/>
+            </div>
+            <div className={classes.rightEye}>
+                <div className={classes.pupil}/>
+            </div>
+            <div className={classes.mouth}/>
         </div>
     )
 }
