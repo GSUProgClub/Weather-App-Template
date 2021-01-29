@@ -7,16 +7,14 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 
 const Conditions = (props) => {
-    // Checks for proper what state the Component is in
+    // Checks for what state the Component is in
+    // Here, the way props is used, is to short circuit so that if we error
+    // OR if we're loading, it displays the appropriate responses
     return (
         <div className={classes.Wrapper}>
             {props.error && 
                 <small className={classes.Small}>Please enter a valid city.</small>
             }
-            
-            {props.exists &&
-                <small className={classes.Small}>The city already exists</small>
-            } 
 
             {props.loading && 
                 <div className={classes.Loader}/>

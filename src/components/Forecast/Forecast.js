@@ -11,15 +11,12 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {FormControl, FormLabel, Radio, RadioGroup} from "@material-ui/core";
 
-let cities = [];
-
 const Forecast = () => {
     let [city, setCity] = useState('');
     let [unit, setUnit] = useState();
     let [responseObj, setResponse] = useState({});
     let [error, setError] = useState(false);
     let [loading, setLoading] = useState(false);
-    let [seen, setSeen] = useState(false);
     let weatherList = [];
     
     function getForecast(e) {
@@ -38,15 +35,6 @@ const Forecast = () => {
         // go from a text entry to a real text component
         // strips spaces, and most illegal characters
         const uriEncodedCity = encodeURIComponent(city);
-
-        // uncomment this code for the demo
-        // if (cities.length > 1 && cities.includes(uriEncodedCity)) {
-        //     setSeen(true);
-        //     return;
-        // } else {
-        //     setSeen(false);
-        //     cities.push(uriEncodedCity);
-        // }
 
         const api_call = `https://api.openweathermap.org/data/2.5/weather?q=${uriEncodedCity}&units=${unit}&appid=${process.env.REACT_APP_API_KEY}`;
         fetch(api_call)
