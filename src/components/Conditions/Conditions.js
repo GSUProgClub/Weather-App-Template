@@ -1,19 +1,9 @@
 import React from 'react';
 import classes from './Conditions.module.css';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
 
-const Conditions = (props) => {
-    let visible = true;
+debugger
+const conditions = (props) => {
     // Here, the way props is used, is to short circuit so that if we error
-    function dismiss() {
-        visible = false;
-    }
-
     // OR if we're loading, it displays the appropriate responses
     return (
         <div className={classes.Wrapper}>
