@@ -3,7 +3,7 @@ import './App.css';
 import Forecast from "./components/Forecast/Forecast";
 import Logo from "./components/Logo/Logo";
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <header className='App-header'>

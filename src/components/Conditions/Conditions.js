@@ -14,6 +14,12 @@ const Conditions = (props) => {
                 <div className={classes.Loader}/>
             }
 
+            {!props.API &&
+                <div>
+                    <small className={classes.Small}>Please enter an API key</small>
+                </div>
+            }
+
             {props.responseObj.cod === 200 ?
                 <div>
                     <p><strong>{props.responseObj.name}</strong></p>

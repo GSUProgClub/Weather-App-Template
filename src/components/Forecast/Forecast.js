@@ -17,6 +17,7 @@ const Forecast = () => {
     let [responseObj, setResponse] = useState({});
     let [error, setError] = useState(false);
     let [loading, setLoading] = useState(false);
+    let [apiExists, setAPI] = useState(true);
     let weatherList = [];
     
     function getForecast(e) {
@@ -35,6 +36,13 @@ const Forecast = () => {
         // go from a text entry to a real text component
         // strips spaces, and most illegal characters
         const uriEncodedCity = encodeURIComponent(city);
+
+        if (typeof process.env.REACT_APP_API_KEY !== "undefined") {
+            setAPI(true);
+        }
+        else {
+            setAPI(false);
+        }
 
         const api_call = `https://api.openweathermap.org/data/2.5/weather?q=${uriEncodedCity}&units=${unit}&appid=${process.env.REACT_APP_API_KEY}`;
         fetch(api_call)
@@ -80,10 +88,10 @@ const Forecast = () => {
                         onChange={(e) => setCity(e.target.value)}
                         />
                         <FormControl component={"fieldset"}>
-                            <FormLabel component={"units"}/>
+                            <FormLabel/>
                             <RadioGroup name={"units"} value={unit} onChange={(e) => setUnit(e.target.value)}>
-                                <FormControlLabel value={'metric'} control={<Radio/>} label={"Celsius"}/>
-                                <FormControlLabel value={'imperial'} control={<Radio/>} label={"Fahrenheit"}/>
+                                <FormControlLabel value={'metric'} control={<Radio value={'metric'}/>} label={"Celsius"}/>
+                                <FormControlLabel value={'imperial'} control={<Radio value={'imperial'}/>} label={"Fahrenheit"}/>
                             </RadioGroup>
                         </FormControl>
                     <Button
@@ -99,8 +107,8 @@ const Forecast = () => {
                     responseObj={responseObj}
                     error={error}
                     loading={loading}
-                    exists={seen}
                     cities={weatherList}
+                    API={apiExists}
                 />
             </div>
         </Container>
