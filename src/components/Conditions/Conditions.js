@@ -9,10 +9,6 @@ const Conditions = (props) => {
             {props.error && 
                 <small className={classes.Small}>Please enter a valid city.</small>
             }
-            
-            {props.exists &&
-                <small className={classes.Small}>The city already exists</small>
-            } 
 
             {props.loading && 
                 <div className={classes.Loader}/>
