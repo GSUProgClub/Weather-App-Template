@@ -18,7 +18,6 @@ const Forecast = () => {
     let [error, setError] = useState(false);
     let [loading, setLoading] = useState(false);
     let [apiExists, setAPI] = useState(true);
-    let weatherList = [];
     
     function getForecast(e) {
         // Stops default values of e going through
@@ -54,7 +53,6 @@ const Forecast = () => {
                 }
                 
                 setResponse(response);  // we set the response and trigger update
-                weatherList.push(response); // We then append the weather of the city to the list we pass to the card renderer
                 setLoading(false);  // We set our loading message to false
             })
             .catch(err => {
@@ -107,7 +105,6 @@ const Forecast = () => {
                     responseObj={responseObj}
                     error={error}
                     loading={loading}
-                    cities={weatherList}
                     API={apiExists}
                 />
             </div>
