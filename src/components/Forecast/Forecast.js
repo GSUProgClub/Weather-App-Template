@@ -19,8 +19,27 @@ const Forecast = () => {
     let [loading, setLoading] = useState(false);
     let weatherList = [];
 
-    function hasNumber(inputVal) {
-        return /\d/.test(inputVal);
+    async function getLatLong(inputVal) {
+        let latitude = 0, longitude = 0, name = "";
+        await fetch(inputVal)
+            .then(response => response.json())
+            .then(response => {
+                if (response.cod !== 200) {
+                    throw new Error();
+                    // unexpected response
+                }
+                latitude = response.records[0].geopoint[0];
+                longitude = response.records[1].geopoint[1];
+                name = response.records[0].fields.city;
+            })
+            .catch(err => {
+                // we found a legitimate error, logging
+                //setSeen(false);
+                setError(true);
+                setLoading(false);
+                console.log(err.message);
+            });
+        return [latitude, longitude, name];
     }
 
     function getForecast(e) {
@@ -40,17 +59,17 @@ const Forecast = () => {
         // strips spaces, and most illegal characters
         const uriEncodedCity = encodeURIComponent(inputValue);
 
-        let api_call = `https://api.openweathermap.org/data/2.5/weather?`;
+        // To use the OneCall API from OpenWeather we need the lat, long and to properly get those,
+        // we're going to make another api call to OpenDataSoft and their database us-zip-code-latitude-and-longitude
 
-        // we actually build an API request
-        if (hasNumber(uriEncodedCity)) {
-            // we check if it is a zipcode
-            api_call += `zip=${uriEncodedCity}&units=${unit}&appid=${process.env.REACT_APP_API_KEY}`;
-        }
-        else {
-            // otherwise we just try a city
-            api_call += `q=${uriEncodedCity}&units=${unit}&appid=${process.env.REACT_APP_API_KEY}`;
-        }
+        const lat_long_api = `https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-zip-code-latitude-and-longitude&q=${uriEncodedCity}`;
+
+        let city_info = getLatLong(lat_long_api);
+
+        const latitude = city_info[0], longitude = city_info[1];
+        setInputValue(city_info[2]);
+
+        const api_call = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly,alerts&appid=${process.env.REACT_APP_API_KEY}`;
 
         fetch(api_call)
             .then(response => response.json())  // specify that the response is json
@@ -112,6 +131,7 @@ const Forecast = () => {
                 </form>
                 <Conditions
                     responseObj={responseObj}
+                    name = {inputValue}
                     error={error}
                     loading={loading}
                     cities={weatherList}

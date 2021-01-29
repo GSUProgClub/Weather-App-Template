@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './Conditions.module.css';
+import FutureData from '../FutureData/FutureData';
 
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -25,25 +26,23 @@ const Conditions = (props) => {
                         <CardMedia className={classes.media} image={`https://openweathermap.org/img/wn/${props.responseObj.weather[0]["icon"]}@2x.png`}/>
                         <CardContent>
                             <Typography variant={"h5"} component={"h2"}>
-                                {props.responseObj.name}
+                                {props.name}
                             </Typography>
                             <Typography className={classes.pos} color={"textSecondary"}>
                                 {props.responseObj.weather[0].description}
                             </Typography>
                             <Typography variant={"body2"} component={"p"}>
-                                Feels Like: {Math.round(props.responseObj.main.feels_like)}
+                                Current: {Math.round(props.responseObj.current.temp)}
                             </Typography>
                             <Typography variant={"body2"} component={"p"}>
-                                Minimum: {Math.round(props.responseObj.main.temp_min)}
-                            </Typography>
-                            <Typography variant={"body2"} component={"p"}>
-                                Maximum: {Math.round(props.responseObj.main.temp_max)}
+                                Feels Like: {Math.round(props.responseObj.current.feels_like)}
                             </Typography>
                             <Typography variant={"body2"} component={"p"}>
                                 Humidity: {Math.round(props.responseObj.main.humidity)}
                             </Typography>
                         </CardContent>
                     </Card>
+                    <FutureData responseObj={props.responseObj}/>
                 </div>
                 : null
             }
