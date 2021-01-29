@@ -1,29 +1,14 @@
-.textInput {
-    font-size: large;
-    border: 1px solid #EEEEEE;
-    padding: 5px;
-    border-radius: 3px;
-    display: block;
-    margin: 5px auto;
+.paper {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form {
+    width: 100%;
+    margin: 10px 10px 10px 10px;
 }
 
-.textInput:focus {
-    outline: none;
-    border-color: #719ECE;
-    box-shadow: 0 0 10px rgb(50, 100, 153);
-}
-
-.Radio {
-    font-size: small;
-}
-
-.Button {
-    display: block;
-    margin: 10px auto;
-    padding: .5rem;
-    font-size: 1em;
-    background: darkcyan;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
+.submit {
+    margin: 10px 10px 10px 10px;
 }
